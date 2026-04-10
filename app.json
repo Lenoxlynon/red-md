@@ -1,0 +1,33 @@
+{
+  "name": "Red MD",
+  "description": "WhatsApp Bot with rich features",
+  "repository": "https://github.com/darknessfreenetsquad/red-md",
+  "logo": "https://files.catbox.moe/eumprt.jpg",
+  "keywords": ["whatsapp", "bot", "baileys"],
+  "env": {
+    "SESSION_ID": {
+      "description": "Your Baileys Session ID",
+      "required": false
+    },
+    "OWNER": {
+      "description": "Owner number (comma separated)",
+      "required": true,
+      "value": "27634988678"
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    }
+  ]
+}
