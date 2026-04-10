@@ -1,0 +1,8 @@
+run = "node index.js"
+language = "nodejs"
+
+[packager]
+language = "nodejs"
+
+[interpreter]
+command = "node"
