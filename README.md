@@ -15,13 +15,49 @@
 Access the platform to find all official RedBot links and receive exclusive updates. The page is constantly updated with the latest news. Join our community now!
 
 <a href="https://files.catbox.moe/eumprt.jpg">
-<img src="https://img.shields.io/badge/GataBot_Accounts-000000%7D?style=for-the-badge&logo=biolink&logoColor=white">
+<img src="https://img.shields.io/badge/Red_profile-000000%7D?style=for-the-badge&logo=biolink&logoColor=white">
 </a>
 
-## ✅ Plataformas Disponibles  
+## ✅ Platforms Ready for deployment
 <details>
-  <summary>Haz clic para ver las plataformas disponibles</summary>
+  <summary>Click to see the available platforms</summary>
 
-  - 📱 **Termux**  
-  - 💻 **Replit**  
-  - 🖥 **Windows**  
+· 📱 Termux
+· 💻 Replit
+· 🖥 Windows
+· 🚀 Render
+· 🐳 Docker
+· 🛤 Railway
+· ☁️ Heroku (via Procfile)
+· 🤗 Hugging Face
+
+</details>
+
+---
+
+## 🚀 How to deploy on Hugging Face
+
+1. Create a Space
+   · Go to huggingface.co/new-space
+   · Choose Docker or Static (depending on your bot type)
+2. Upload your files
+   · Drag and drop all your bot files (including Dockerfile, index.js, package.json, etc.)
+   · Or use Git:
+     ```bash
+     git add .
+     git commit -m "Deploy bot"
+     git push
+     ```
+3. Set secrets / environment variables
+   · Go to your Space Settings → Repository secrets
+   · Add any required keys (API keys, bot tokens, etc.)
+4. Select a hardware
+   · Free CPU is usually enough for small bots
+   · Upgrade to GPU if needed
+5. Run & monitor
+   · Hugging Face will automatically build and run your app
+   · Check logs in the App tab
+
+⚠️ Note: If your bot requires a persistent file system or long-running processes, consider using Render or Railway instead.
+
+Let me know if you want a more detailed step‑by‑step for a specific bot type (Node.js, Python, etc.).
