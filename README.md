@@ -36,7 +36,7 @@ Access the platform to find all official RedBot links and receive exclusive upda
 ---
 
 ## 🚀 How to deploy on Hugging Face
-
+<summary>Click to see the available platforms</summary>
 1. Create a Space
    · Go to huggingface.co/new-space
    · Choose Docker or Static (depending on your bot type)
