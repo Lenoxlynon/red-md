@@ -6,8 +6,8 @@ global.owner = ['27634988678', '27824275911'];
 global.ownerName = 'reddragon';
 global.botName = 'RED MD';
 global.prefix = ['.', '/', '!']; // Multiprefix
-global.newsletterJid = '120363351424590490@newsletter';
-global.groupInvite = 'HeMpaJhQvBD1qm9LD56gnP';
+global.newsletterJid = '120363427119111004@newsletter';
+global.groupInvite = 'FGtdmXoiBRy7f94UPDFyIz';
 global.mode = 'public'; // 'public' or 'self'
 global.iphoneMode = false; // 'true' or 'false'
 
@@ -44,12 +44,12 @@ global.autoJoin = true; // Auto join on
 global.sessionPrefix = 'red~';
 
 // Thumbnails & Media (Indonesian Girl theme)
-global.thumb = 'https://files.catbox.moe/8j8p8p.jpg'; // Indonesian girl placeholder
-global.menuImage = 'https://files.catbox.moe/8j8p8p.jpg';
+global.thumb = 'https://files.catbox.moe/eumprt.jpg'; // Indonesian girl placeholder
+global.menuImage = 'https://files.catbox.moe/eumprt.jpg';
 global.carouselImages = [
-  'https://files.catbox.moe/8j8p8p.jpg',
-  'https://files.catbox.moe/8j8p8p.jpg',
-  'https://files.catbox.moe/8j8p8p.jpg'
+  'https://files.catbox.moe/eumprt.jpg',
+  'https://files.catbox.moe/eumprt.jpg',
+  'https://files.catbox.moe/eumprt.jpg'
 ];
 
 // Verification
