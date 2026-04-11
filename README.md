@@ -61,3 +61,6 @@ Access the platform to find all official RedBot links and receive exclusive upda
 ⚠️ Note: If your bot requires a persistent file system or long-running processes, consider using Render or Railway instead.
 
 Let me know if you want a more detailed step‑by‑step for a specific bot type (Node.js, Python, etc.).
+</details>
+
+-------
