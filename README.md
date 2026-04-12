@@ -1,10 +1,4 @@
-# red-md
-> DEPLOY RED-MD
-<div align="center">    
-  <a href="https://dashboard.heroku.com/new?template=https://github.com/darknessfreenetsquad/red-md">
-    <img src="https://img.shields.io/badge/Heroku%20Deploy-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=darkblue&color=purple" alt="Deploy Red MD"/>
-  </a>
-  ------
+> # red-md
 </div>
 <div align="center">
   
@@ -40,6 +34,13 @@ Access the platform to find all official RedBot links and receive exclusive upda
 
 </details>
 
+---
+> DEPLOY RED-MD
+<div align="center">    
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/darknessfreenetsquad/red-md">
+    <img src="https://img.shields.io/badge/Heroku%20Deploy-100000?style=for-the-badge&logo=scan&logoColor=white&labelColor=darkblue&color=purple" alt="Deploy Red MD"/>
+  </a>
+</div>
 ---
 
 ## 🚀 How to deploy on Hugging Face
