@@ -1,19 +1,12 @@
-# render.yaml - Node.js Blueprint with Session ID
+# render.yaml - Fixed Version
 services:
-  # Main Node.js Web Service
   - type: web
     name: nodejs-app
     runtime: node
     plan: free
-    repo: https://github.com/darknessfreenetsquad/red-md
-    
-    # Build command
+    repo: https://github.com/yourusername/yourrepo
     buildCommand: npm install
-    
-    # Start command
     startCommand: npm start
-    
-    # Environment variables
     envVars:
       - key: NODE_VERSION
         value: 20.0.0
@@ -21,27 +14,5 @@ services:
         value: production
       - key: PORT
         value: 3000
-      
-      # SESSION ID as environment variable
       - key: SESSION_ID
-        generateValue: true  # Auto-generates a unique session ID
-        # OR manually set:
-        # value: "your-session-id-here"
-        # OR user must provide:
-        # sync: false
-      
-      - key: DATABASE_URL
-        fromDatabase:
-          name: node-db
-      - key: API_KEY
-        sync: false
-
-  # Optional: Database
-  - type: database
-    name: node-db
-    plan: free
-
-  # Optional: Redis (for session storage)
-  - type: redis
-    name: node-redis
-    plan: free
+        generateValue: true
