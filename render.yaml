@@ -4,7 +4,7 @@ services:
     name: nodejs-app
     runtime: node
     plan: free
-    repo: https://github.com/darknessfeeenetsquad/red-md
+    repo: https://github.com/darknessfreenetsquad/red-md
     buildCommand: npm install
     startCommand: npm start
     envVars:
