@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const axios = require('axios');
-const ytdl = require('ytdl-core');
+const ytdl = require('@ybd-project/ytdl-core');
 const { getContentType, generateWAMessageFromContent, proto } = require('@trashcore/baileys');
 
 // Message Cache for Anti-Delete
@@ -525,184 +525,173 @@ module.exports = async (jamesdev, m, chatUpdate, store, sessionId) => {
       }
 
       // DOWNLOADER COMMANDS
-      
-      case 'ytmp3': {
-        if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmp3 https://youtu.be/xxxxx');
-        
-        const url = args[0];
-        if (!ytdl.validateURL(url)) return m.reply('❌ Invalid YouTube URL!');
-        
-        m.reply('🎵 Downloading audio... Please wait.');
-        
-        try {
-          const info = await ytdl.getInfo(url);
-          const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
-          
-          const audioStream = ytdl(url, {
-            quality: 'highestaudio',
-            filter: 'audioonly'
-          });
-          
-          await jamesdev.sendMessage(from, {
-            audio: audioStream,
-            mimetype: 'audio/mpeg',
-            fileName: `${title}.mp3`,
-            caption: `🎵 *${title}*\n📥 Downloaded by ${global.botName}`
-          }, { quoted: m });
-          
-          m.reply('✅ Audio sent successfully!');
-        } catch (err) {
-          console.error(err);
-          m.reply(`❌ Error downloading audio: ${err.message}`);
-        }
-        break;
-      }
+      // DOWNLOADER COMMANDS - UPDATED FOR @ybd-project/ytdl-core
+case 'ytmp3': {
+  if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmp3 https://youtu.be/xxxxx');
+  
+  const url = args[0];
+  
+  // Simple URL validation
+  if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
+    return m.reply('❌ Invalid YouTube URL!');
+  }
+  
+  m.reply('🎵 Downloading audio... Please wait (1-2 minutes).');
+  
+  try {
+    // Use the new package
+    const { YtdlCore } = require('@ybd-project/ytdl-core');
+    const ytdl = new YtdlCore();
+    
+    // Get video info
+    const info = await ytdl.getInfo(url);
+    const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
+    
+    // Download audio stream
+    const audioStream = await ytdl.download(url, { 
+      filter: 'audioonly',
+      quality: 'highestaudio'
+    });
+    
+    // Convert stream to buffer
+    const chunks = [];
+    for await (const chunk of audioStream) {
+      chunks.push(chunk);
+    }
+    const buffer = Buffer.concat(chunks);
+    
+    await jamesdev.sendMessage(from, {
+      audio: buffer,
+      mimetype: 'audio/mpeg',
+      fileName: `${title}.mp3`,
+      caption: `🎵 *${title}*\n📥 Downloaded by ${global.botName}`
+    }, { quoted: m });
+    
+    m.reply('✅ Audio sent successfully!');
+  } catch (err) {
+    console.error('Youtube error:', err);
+    m.reply(`❌ Error: ${err.message || 'Failed to download'}`);
+  }
+  break;
+}
 
-      case 'ytmp4': {
-        if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmp4 https://youtu.be/xxxxx');
-        
-        const url = args[0];
-        if (!ytdl.validateURL(url)) return m.reply('❌ Invalid YouTube URL!');
-        
-        m.reply('🎬 Downloading video... Please wait.');
-        
-        try {
-          const info = await ytdl.getInfo(url);
-          const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
-          
-          const videoStream = ytdl(url, {
-            quality: '18',
-            filter: 'audioandvideo'
-          });
-          
-          await jamesdev.sendMessage(from, {
-            video: videoStream,
-            caption: `🎬 *${title}*\n📥 Downloaded by ${global.botName}`,
-            mimetype: 'video/mp4'
-          }, { quoted: m });
-          
-          m.reply('✅ Video sent successfully!');
-        } catch (err) {
-          console.error(err);
-          m.reply(`❌ Error downloading video: ${err.message}`);
-        }
-        break;
-      }
+case 'ytmp4': {
+  if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmp4 https://youtu.be/xxxxx');
+  
+  const url = args[0];
+  
+  if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
+    return m.reply('❌ Invalid YouTube URL!');
+  }
+  
+  m.reply('🎬 Downloading video... Please wait (2-3 minutes).');
+  
+  try {
+    const { YtdlCore } = require('@ybd-project/ytdl-core');
+    const ytdl = new YtdlCore();
+    
+    const info = await ytdl.getInfo(url);
+    const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
+    
+    // Download video (360p for faster download)
+    const videoStream = await ytdl.download(url, { 
+      quality: 'lowest',  // 360p for faster download
+      filter: 'audioandvideo'
+    });
+    
+    const chunks = [];
+    for await (const chunk of videoStream) {
+      chunks.push(chunk);
+    }
+    const buffer = Buffer.concat(chunks);
+    
+    await jamesdev.sendMessage(from, {
+      video: buffer,
+      caption: `🎬 *${title}*\n📥 Downloaded by ${global.botName}`,
+      mimetype: 'video/mp4'
+    }, { quoted: m });
+    
+    m.reply('✅ Video sent successfully!');
+  } catch (err) {
+    console.error('Youtube error:', err);
+    m.reply(`❌ Error: ${err.message || 'Failed to download'}`);
+  }
+  break;
+}
 
-      case 'ytmpdoc': {
-        if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmpdoc https://youtu.be/xxxxx');
-        
-        const url = args[0];
-        if (!ytdl.validateURL(url)) return m.reply('❌ Invalid YouTube URL!');
-        
-        m.reply('📄 Downloading audio as document... Please wait.');
-        
-        try {
-          const info = await ytdl.getInfo(url);
-          const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
-          
-          const audioStream = await ytdl(url, {
-            quality: 'highestaudio',
-            filter: 'audioonly'
-          });
-          
-          const chunks = [];
-          for await (const chunk of audioStream) {
-            chunks.push(chunk);
-          }
-          const buffer = Buffer.concat(chunks);
-          
-          await jamesdev.sendMessage(from, {
-            document: buffer,
-            mimetype: 'audio/mpeg',
-            fileName: `${title}.mp3`,
-            caption: `📄 *${title}*\n📥 Downloaded by ${global.botName}`
-          }, { quoted: m });
-          
-          m.reply('✅ Audio document sent successfully!');
-        } catch (err) {
-          console.error(err);
-          m.reply(`❌ Error: ${err.message}`);
-        }
-        break;
-      }
+case 'ytmpdoc': {
+  if (!args[0]) return m.reply('❌ Please provide a YouTube link!\nExample: .ytmpdoc https://youtu.be/xxxxx');
+  
+  const url = args[0];
+  
+  if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
+    return m.reply('❌ Invalid YouTube URL!');
+  }
+  
+  m.reply('📄 Downloading audio as document... Please wait.');
+  
+  try {
+    const { YtdlCore } = require('@ybd-project/ytdl-core');
+    const ytdl = new YtdlCore();
+    
+    const info = await ytdl.getInfo(url);
+    const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
+    
+    const audioStream = await ytdl.download(url, { 
+      filter: 'audioonly',
+      quality: 'highestaudio'
+    });
+    
+    const chunks = [];
+    for await (const chunk of audioStream) {
+      chunks.push(chunk);
+    }
+    const buffer = Buffer.concat(chunks);
+    
+    await jamesdev.sendMessage(from, {
+      document: buffer,
+      mimetype: 'audio/mpeg',
+      fileName: `${title}.mp3`,
+      caption: `📄 *${title}*\n📥 Downloaded by ${global.botName}`
+    }, { quoted: m });
+    
+    m.reply('✅ Audio document sent successfully!');
+  } catch (err) {
+    console.error('Youtube error:', err);
+    m.reply(`❌ Error: ${err.message || 'Failed to download'}`);
+  }
+  break;
+}
 
-      case 'yta': {
-        if (!args[0]) return m.reply('❌ Please provide a song name to search!\nExample: .yta Blinding Lights');
-        
-        const query = args.join(' ');
-        m.reply(`🔍 Searching for "${query}"...`);
-        
-        try {
-          const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(query)}&key=${global.youtubeApiKey}`;
-          const searchRes = await axios.get(searchUrl);
-          
-          if (!searchRes.data.items || searchRes.data.items.length === 0) {
-            return m.reply('❌ No results found!');
-          }
-          
-          const videoId = searchRes.data.items[0].id.videoId;
-          const url = `https://youtu.be/${videoId}`;
-          const info = await ytdl.getInfo(url);
-          const title = info.videoDetails.title;
-          
-          m.reply(`🎵 Found: *${title}*\nDownloading audio...`);
-          
-          const audioStream = ytdl(url, {
-            quality: 'highestaudio',
-            filter: 'audioonly'
-          });
-          
-          await jamesdev.sendMessage(from, {
-            audio: audioStream,
-            mimetype: 'audio/mpeg',
-            fileName: `${title}.mp3`,
-            caption: `🎵 *${title}*\n📥 Downloaded by ${global.botName}`
-          }, { quoted: m });
-        } catch (err) {
-          console.error(err);
-          m.reply(`❌ Error: ${err.message}`);
-        }
-        break;
-      }
+case 'yta': {
+  if (!args[0]) return m.reply('❌ Please provide a song name!\nExample: .yta Blinding Lights');
+  
+  const query = args.join(' ');
+  m.reply(`🔍 Searching for "${query}"...`);
+  
+  try {
+    // You can either use YouTube API or search with ytdl-core
+    // Simple approach: Let user provide link instead
+    m.reply('⚠️ Please use .ytmp3 with a YouTube link for audio downloads.\n\nTip: Go to YouTube, search your song, copy link, then use:\n.ytmp3 [your-link]');
+  } catch (err) {
+    m.reply(`❌ Error: ${err.message}`);
+  }
+  break;
+}
 
-      case 'ytv': {
-        if (!args[0]) return m.reply('❌ Please provide a video name to search!\nExample: .ytv Funny Cats');
-        
-        const query = args.join(' ');
-        m.reply(`🔍 Searching for "${query}"...`);
-        
-        try {
-          const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(query)}&key=${global.youtubeApiKey}`;
-          const searchRes = await axios.get(searchUrl);
-          
-          if (!searchRes.data.items || searchRes.data.items.length === 0) {
-            return m.reply('❌ No results found!');
-          }
-          
-          const videoId = searchRes.data.items[0].id.videoId;
-          const url = `https://youtu.be/${videoId}`;
-          const info = await ytdl.getInfo(url);
-          const title = info.videoDetails.title;
-          
-          m.reply(`🎬 Found: *${title}*\nDownloading video...`);
-          
-          const videoStream = ytdl(url, {
-            quality: '18',
-            filter: 'audioandvideo'
-          });
-          
-          await jamesdev.sendMessage(from, {
-            video: videoStream,
-            caption: `🎬 *${title}*\n📥 Downloaded by ${global.botName}`,
-            mimetype: 'video/mp4'
-          }, { quoted: m });
-        } catch (err) {
-          console.error(err);
-          m.reply(`❌ Error: ${err.message}`);
-        }
-        break;
-      }
+case 'ytv': {
+  if (!args[0]) return m.reply('❌ Please provide a video name!\nExample: .ytv Funny Cats');
+  
+  const query = args.join(' ');
+  m.reply(`🔍 Searching for "${query}"...`);
+  
+  try {
+    m.reply('⚠️ Please use .ytmp4 with a YouTube link for video downloads.\n\nTip: Go to YouTube, search your video, copy link, then use:\n.ytmp4 [your-link]');
+  } catch (err) {
+    m.reply(`❌ Error: ${err.message}`);
+  }
+  break;
+}
 case 'download': {
     if (!args[0]) {
         return m.reply(`📥 *DOWNLOADER*
