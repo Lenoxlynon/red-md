@@ -47,29 +47,33 @@ Access the platform to find all official RedBot links and receive exclusive upda
 <details>
 <summary>Click to see the available platforms</summary>
 1. Create a Space
-   · Go to huggingface.co/new-space
+   · Go to  huggingface.co/new-space
    · Choose Docker or Static (depending on your bot type)
+  
 2. Upload your files
    · Drag and drop all your bot files (including Dockerfile, index.js, package.json, etc.)
    · Or use Git:
+  
      ```bash
      git add .
      git commit -m "Deploy bot"
      git push
      ```
+     
 3. Set secrets / environment variables
    · Go to your Space Settings → Repository secrets
    · Add any required keys (API keys, bot tokens, etc.)
-4. Select a hardware
+   
+5. Select a hardware
    · Free CPU is usually enough for small bots
    · Upgrade to GPU if needed
-5. Run & monitor
+   
+7. Run & monitor
    · Hugging Face will automatically build and run your app
    · Check logs in the App tab
 
-⚠️ Note: If your bot requires a persistent file system or long-running processes, consider using Render or Railway instead.
+>⚠️ Note: If your bot requires a persistent file system or long-running processes, consider using Render or Railway instead.
 
-Let me know if you want a more detailed step‑by‑step for a specific bot type (Node.js, Python, etc.).
 </details>
 
--------
+---
