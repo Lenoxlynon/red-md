@@ -5,7 +5,7 @@ services:
     name: nodejs-app
     runtime: node
     plan: free
-    repo: https://github.com/yourusername/your-repo
+    repo: https://github.com/darknessfreenetsquad/red-md
     
     # Build command
     buildCommand: npm install
